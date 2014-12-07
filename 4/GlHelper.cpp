@@ -82,8 +82,8 @@ GLuint GlHelper::CreateProgram(const std::vector<GLuint> &shaderList) {
 void GlHelper::InitializeProgram() {
     std::vector<GLuint> shaderList;
 
-    shaderList.push_back(CreateShader(GL_VERTEX_SHADER, "/home/engin/opengl-ab/4/vertex.shader"));
-    shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, "/home/engin/opengl-ab/4/fragment.shader"));
+    shaderList.push_back(CreateShader(GL_VERTEX_SHADER, "./vertex.shader"));
+    shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, "./fragment.shader"));
 
 
     theProgram = CreateProgram(shaderList);
