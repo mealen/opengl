@@ -79,8 +79,8 @@ GLuint GlHelper::CreateProgram(const std::vector<GLuint> &shaderList) {
 void GlHelper::InitializeProgram() {
     std::vector<GLuint> shaderList;
 
-    shaderList.push_back(CreateShader(GL_VERTEX_SHADER, "/home/engin/opengl-ab/2/vertex.shader"));
-    shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, "/home/engin/opengl-ab/2/fragment.shader"));
+    shaderList.push_back(CreateShader(GL_VERTEX_SHADER, "./vertex.shader"));
+    shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, "./fragment.shader"));
 
     theProgram = CreateProgram(shaderList);
     std::for_each(shaderList.begin(), shaderList.end(), glDeleteShader);
@@ -146,5 +146,37 @@ void GlHelper::render() {
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
     glUseProgram(0);
+}
+
+void GlHelper::move(GlHelper::directions direction){
+	float movementAmount = 0.1;
+
+	switch (direction) {
+	case UP:
+		vertexPositions[1] += movementAmount;
+		vertexPositions[5] += movementAmount;
+		vertexPositions[9] += movementAmount;
+		break;
+	case DOWN:
+		vertexPositions[1] -= movementAmount;
+		vertexPositions[5] -= movementAmount;
+		vertexPositions[9] -= movementAmount;
+		break;
+	case LEFT:
+		vertexPositions[0] -= movementAmount;
+		vertexPositions[4] -= movementAmount;
+		vertexPositions[8] -= movementAmount;
+		break;
+	case RIGHT:
+		vertexPositions[0] += movementAmount;
+		vertexPositions[4] += movementAmount;
+		vertexPositions[8] += movementAmount;
+		break;
+	}
+
+    glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
+    glEnableClientState(GL_VERTEX_ARRAY) ;
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

@@ -1,6 +1,6 @@
 #version 330
 
-in vec4 colorOut;
+smooth in vec4 colorOut;
 
 void main()
 {

@@ -26,8 +26,11 @@ private:
     GLuint offsetLocation;
     float xOffset;
     float yOffset;
-    float vertexPositions[12];
-    float vertexColors[12];
+    float vertexPositions[36 * 4];
+    float vertexColors[36 * 4];
+    GLuint frustumScaleUnif;
+    GLuint zNearUnif;
+    GLuint zFarUnif;
 
 public:
     enum directions { UP, LEFT, DOWN, RIGHT };
@@ -38,7 +41,6 @@ public:
     void InitializeProgram();
     void reshape (int, int);
     void move(directions);
-    void APIENTRY DebugFunc(GLenum, GLenum, GLuint, GLenum, GLsizei, const GLchar*, const GLvoid*);
 
     void InitializeVertexBuffer();
 
