@@ -5,15 +5,18 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
     GLuint shader = glCreateShader(eShaderType);
     std::string shaderCode;
     std::ifstream shaderStream(strShaderFile.c_str(), std::ios::in);
-    if(shaderStream.is_open()){
-            std::string Line = "";
-            while(getline(shaderStream, Line))
-                    shaderCode += "\n" + Line;
-            shaderStream.close();
-    }else{
-            printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", strShaderFile.c_str());
-            getchar();
-            return 0;
+
+    if(shaderStream.is_open()) {
+        std::string Line = "";
+
+        while(getline(shaderStream, Line))
+            shaderCode += "\n" + Line;
+
+        shaderStream.close();
+    } else {
+        std::cerr << strShaderFile.c_str() << " dosyasi acilamadi. Uygulamanizi bu dosyanin oldugu dizinde calistirdiginizdan emin olunuz." << std::endl;
+        getchar();
+        return 0;
     }
 
     const char* shaderCodePtr = shaderCode.c_str();
@@ -23,6 +26,7 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
 
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+
     if (status == GL_FALSE)
     {
         GLint infoLogLength;
@@ -31,23 +35,27 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
         GLchar *strInfoLog = new GLchar[infoLogLength + 1];
         glGetShaderInfoLog(shader, infoLogLength, NULL, strInfoLog);
         const char *strShaderType = NULL;
+
         switch(eShaderType)
         {
         case GL_VERTEX_SHADER:
             strShaderType = "vertex";
             break;
+
         case GL_GEOMETRY_SHADER:
             strShaderType = "geometry";
             break;
+
         case GL_FRAGMENT_SHADER:
             strShaderType = "fragment";
             break;
         }
 
-        fprintf(stderr, "Compile failure in %s shader:\n%s\n", strShaderType, strInfoLog);
+        std::cerr << strShaderType << " tipi shader dosyasi derlenemedi. Detaylar:\n" << strInfoLog << std::endl;
         delete[] strInfoLog;
 
     }
+
     return shader;
 }
 
@@ -60,6 +68,7 @@ GLuint GlHelper::CreateProgram(const std::vector<GLuint> &shaderList) {
     glLinkProgram(program);
     GLint status;
     glGetProgramiv (program, GL_LINK_STATUS, &status);
+
     if (status == GL_FALSE)
     {
         GLint infoLogLength;
@@ -67,7 +76,7 @@ GLuint GlHelper::CreateProgram(const std::vector<GLuint> &shaderList) {
 
         GLchar *strInfoLog = new GLchar[infoLogLength + 1];
         glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
-        fprintf(stderr, "Linker failure: %s\n", strInfoLog);
+        std::cerr << "Linkleme sorunu: \n" << strInfoLog << std::endl;
         delete[] strInfoLog;
     }
 
@@ -76,6 +85,7 @@ GLuint GlHelper::CreateProgram(const std::vector<GLuint> &shaderList) {
 
     for(size_t iLoop = 0; iLoop < shaderList.size(); iLoop++)
         glDetachShader(program, shaderList[iLoop]);
+
     return program;
 }
 
@@ -106,22 +116,22 @@ void GlHelper::InitializeVertexBuffer() {
     glEnableClientState(GL_COLOR_ARRAY) ;
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
+
 }
 
 
 GlHelper::GlHelper() {
 
     float vertexPositions[] = {
-                -0.5f, -0.5f, 0.5f, 1.0f,
-                 0.5f, -0.5f, 0.5f, 1.0f,
-                 0.5f,  0.5f, 0.5f, 1.0f
+        -0.5f, -0.5f, 0.5f, 1.0f,
+        0.5f, -0.5f, 0.5f, 1.0f,
+        0.5f,  0.5f, 0.5f, 1.0f
     };
-    
+
     float vertexColors[] = {
-		1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f
+        1.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f
     };
 
     xOffset = 0.0f;
@@ -157,23 +167,26 @@ void GlHelper::render() {
     glUseProgram(0);
 }
 
-void GlHelper::move(GlHelper::directions direction){
-	float movementAmount = 0.1;
+void GlHelper::move(GlHelper::directions direction) {
+    float movementAmount = 0.1;
 
-	switch (direction) {
-	case UP:
-		yOffset += movementAmount;
-		break;
-	case DOWN:
-		yOffset -= movementAmount;
-		break;
-	case LEFT:
-		xOffset -= movementAmount;
-		break;
-	case RIGHT:
-		xOffset += movementAmount;
-		break;
-	}
+    switch (direction) {
+    case UP:
+        yOffset += movementAmount;
+        break;
+
+    case DOWN:
+        yOffset -= movementAmount;
+        break;
+
+    case LEFT:
+        xOffset -= movementAmount;
+        break;
+
+    case RIGHT:
+        xOffset += movementAmount;
+        break;
+    }
 
 }
 

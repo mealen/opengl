@@ -1,8 +1,6 @@
 #ifndef GL_HELPER_H
 #define GL_HELPER_H
 
-//gpl sheyi
-
 #include <GL/glew.h>
 #include <algorithm>
 #include <vector>

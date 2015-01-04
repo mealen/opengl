@@ -6,9 +6,9 @@ CXX = g++
 
 CXXFLAGS=-Wall -ggdb -c 
 LDFLAGS=-L/usr/lib/nvidia-331/ -L/usr/local/lib/
-LIBS=-lGL -lGLU -lglfw -lGLEW -lX11 -lXxf86vm -lXrandr -lpthread -lXi
+LIBS=-lGL -lGLU -lglfw3 -lGLEW -lX11 -lXxf86vm -lXrandr -lpthread -lXi
 INCLUDES=-I/usr/include
-EXE=Tutorial4
+EXE=ornek4
 BINARY_PATH=bin/
 SOURCE_PATH=src/
 
