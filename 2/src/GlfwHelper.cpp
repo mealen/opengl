@@ -1,4 +1,3 @@
-//gpl sheyi
 #include "GlfwHelper.h"
 
 void GlfwHelper::loop(){
@@ -14,7 +13,7 @@ void GlfwHelper::loop(){
 
 GlfwHelper::GlfwHelper() {
     if (!glfwInit()) {
-        std::cout << "init problem" << std::endl;
+        std::cerr << "GLFW baslatilamadi." << std::endl;
         return;
     }
 
@@ -23,9 +22,9 @@ GlfwHelper::GlfwHelper() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    this->window = glfwCreateWindow( 1024, 768, "Tutorial 02 - Red triangle", NULL, NULL);
+    this->window = glfwCreateWindow( 1024, 768, "AB2015-3D-Ornek-2", NULL, NULL);
     if( window == NULL ) {
-        fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+        fprintf( stderr, "GLFW penceresi acilamadi, ekran karti surucunuz OpenGL 3.3 desteklemiyor olabilir.\n" );
         glfwTerminate();
         return;
     }
@@ -35,7 +34,7 @@ GlfwHelper::GlfwHelper() {
     // Initialize GLEW
     glewExperimental = true; // Needed for core profile
     if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
+        std::cerr << "GLEW baslatilamadi" << std::endl;
         return;
     }
 

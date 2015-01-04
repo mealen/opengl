@@ -1,14 +1,14 @@
 CXX = g++
-# Update these paths to match your installation
-# You may also need to update the linker option rpath, which sets where to look for
-# the GLFW libraries at runtime to match your install
-#GLFW_INCLUDE = -I/usr/include
+# uygulamanin derlenebilmesi icin asagidaki degerleri degistirmeniz gerekebilir 
 
-CXXFLAGS=-Wall -ggdb -c 
+#GLFW_INCLUDE = -I/usr/include
 LDFLAGS=-L/usr/lib/nvidia-331/ -L/usr/local/lib/
-LIBS=-lGL -lGLU -lglfw -lGLEW -lX11 -lXxf86vm -lXrandr -lpthread -lXi
+LIBS=-lGL -lGLU -lglfw3 -lGLEW -lX11 -lXxf86vm -lXrandr -lpthread -lXi
 INCLUDES=-I/usr/include
-EXE=Tutorial2
+
+#bu noktadan sonra degisiklik yapmaniz gerekmemeli 
+CXXFLAGS=-Wall -ggdb -c 
+EXE=ornek2
 BINARY_PATH=bin/
 SOURCE_PATH=src/
 

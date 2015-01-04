@@ -1,0 +1,8 @@
+Derleme için gerekenler
+
+1) Opengl version 3.3 veya daha yeni bir versiyonu destekleyen bilgisayar.
+2) C++ derleyicisi ve autotools
+2) GLEW kütüphanesi
+3) GLFW kütüphanesi
+
+Örnek uygulama üzerinde Ubuntu 14.04 koşan Nvidia ekran kartlı, sürücü versiyonu 331 olan bir masaüstü bilgisayarda derlenmiştir. Eğer dağıtımınız veye ekran kartı marka/sürücünüz farklı ise, buna bağlı değişiklikleri Makefile dosyası içerisinde belirtilen alanda yapmanız gerekebilir.

@@ -1,4 +1,3 @@
-//gpl sheyi
 #include "GlHelper.h"
 
 GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFile) {
@@ -11,7 +10,7 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
                     shaderCode += "\n" + Line;
             shaderStream.close();
     }else{
-            printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", strShaderFile.c_str());
+            std::cerr << strShaderFile.c_str() << " dosyasi acilamadi. Uygulamanizi bu dosyanin oldugu dizinde calistirdiginizdan emin olunuz." << std::endl;
             getchar();
             return 0;
     }
@@ -44,7 +43,7 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
             break;
         }
 
-        fprintf(stderr, "Compile failure in %s shader:\n%s\n", strShaderType, strInfoLog);
+	std::cerr << strShaderType << " tipi shader dosyasi derlenemedi. Detaylar:\n" << strInfoLog << std::endl;
         delete[] strInfoLog;
 
     }
@@ -67,7 +66,7 @@ GLuint GlHelper::CreateProgram(const std::vector<GLuint> &shaderList) {
 
         GLchar *strInfoLog = new GLchar[infoLogLength + 1];
         glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
-        fprintf(stderr, "Linker failure: %s\n", strInfoLog);
+        std::cerr << "Linkleme sorunu: \n" << strInfoLog << std::endl;
         delete[] strInfoLog;
     }
 
