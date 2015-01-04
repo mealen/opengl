@@ -5,15 +5,15 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
     GLuint shader = glCreateShader(eShaderType);
     std::string shaderCode;
     std::ifstream shaderStream(strShaderFile.c_str(), std::ios::in);
-    if(shaderStream.is_open()){
-            std::string Line = "";
-            while(getline(shaderStream, Line))
-                    shaderCode += "\n" + Line;
-            shaderStream.close();
-    }else{
-            printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", strShaderFile.c_str());
-            getchar();
-            return 0;
+    if(shaderStream.is_open()) {
+        std::string Line = "";
+        while(getline(shaderStream, Line))
+            shaderCode += "\n" + Line;
+        shaderStream.close();
+    } else {
+        std::cerr << strShaderFile.c_str() << " dosyasi acilamadi. Uygulamanizi bu dosyanin oldugu dizinde calistirdiginizdan emin olunuz." << std::endl;
+        getchar();
+        return 0;
     }
 
     const char* shaderCodePtr = shaderCode.c_str();
@@ -44,7 +44,7 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
             break;
         }
 
-        fprintf(stderr, "Compile failure in %s shader:\n%s\n", strShaderType, strInfoLog);
+        std::cerr << strShaderType << " tipi shader dosyasi derlenemedi. Detaylar:\n" << strInfoLog << std::endl;
         delete[] strInfoLog;
 
     }
@@ -67,7 +67,7 @@ GLuint GlHelper::CreateProgram(const std::vector<GLuint> &shaderList) {
 
         GLchar *strInfoLog = new GLchar[infoLogLength + 1];
         glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
-        fprintf(stderr, "Linker failure: %s\n", strInfoLog);
+        std::cerr << "Linkleme sorunu: \n" << strInfoLog << std::endl;
         delete[] strInfoLog;
     }
 
@@ -102,22 +102,22 @@ void GlHelper::InitializeVertexBuffer() {
     glEnableClientState(GL_COLOR_ARRAY) ;
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
+
 }
 
 
 GlHelper::GlHelper() {
 
     float vertexPositions[] = {
-                -0.5f, -0.5f, 0.5f, 1.0f,
-                 0.5f, -0.5f, 0.5f, 1.0f,
-                 0.5f,  0.5f, 0.5f, 1.0f
+        -0.5f, -0.5f, 0.5f, 1.0f,
+        0.5f, -0.5f, 0.5f, 1.0f,
+        0.5f,  0.5f, 0.5f, 1.0f
     };
-    
+
     float vertexColors[] = {
-		1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f
+        1.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f
     };
 
     std::copy(vertexPositions,vertexPositions + 12, this->vertexPositions);
@@ -148,31 +148,31 @@ void GlHelper::render() {
     glUseProgram(0);
 }
 
-void GlHelper::move(GlHelper::directions direction){
-	float movementAmount = 0.1;
+void GlHelper::move(GlHelper::directions direction) {
+    float movementAmount = 0.1;
 
-	switch (direction) {
-	case UP:
-		vertexPositions[1] += movementAmount;
-		vertexPositions[5] += movementAmount;
-		vertexPositions[9] += movementAmount;
-		break;
-	case DOWN:
-		vertexPositions[1] -= movementAmount;
-		vertexPositions[5] -= movementAmount;
-		vertexPositions[9] -= movementAmount;
-		break;
-	case LEFT:
-		vertexPositions[0] -= movementAmount;
-		vertexPositions[4] -= movementAmount;
-		vertexPositions[8] -= movementAmount;
-		break;
-	case RIGHT:
-		vertexPositions[0] += movementAmount;
-		vertexPositions[4] += movementAmount;
-		vertexPositions[8] += movementAmount;
-		break;
-	}
+    switch (direction) {
+    case UP:
+        vertexPositions[1] += movementAmount;
+        vertexPositions[5] += movementAmount;
+        vertexPositions[9] += movementAmount;
+        break;
+    case DOWN:
+        vertexPositions[1] -= movementAmount;
+        vertexPositions[5] -= movementAmount;
+        vertexPositions[9] -= movementAmount;
+        break;
+    case LEFT:
+        vertexPositions[0] -= movementAmount;
+        vertexPositions[4] -= movementAmount;
+        vertexPositions[8] -= movementAmount;
+        break;
+    case RIGHT:
+        vertexPositions[0] += movementAmount;
+        vertexPositions[4] += movementAmount;
+        vertexPositions[8] += movementAmount;
+        break;
+    }
 
     glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
