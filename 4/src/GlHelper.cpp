@@ -5,13 +5,10 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
     GLuint shader = glCreateShader(eShaderType);
     std::string shaderCode;
     std::ifstream shaderStream(strShaderFile.c_str(), std::ios::in);
-
     if(shaderStream.is_open()) {
         std::string Line = "";
-
         while(getline(shaderStream, Line))
             shaderCode += "\n" + Line;
-
         shaderStream.close();
     } else {
         std::cerr << strShaderFile.c_str() << " dosyasi acilamadi. Uygulamanizi bu dosyanin oldugu dizinde calistirdiginizdan emin olunuz." << std::endl;
@@ -26,7 +23,6 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
 
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-
     if (status == GL_FALSE)
     {
         GLint infoLogLength;
@@ -35,17 +31,14 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
         GLchar *strInfoLog = new GLchar[infoLogLength + 1];
         glGetShaderInfoLog(shader, infoLogLength, NULL, strInfoLog);
         const char *strShaderType = NULL;
-
         switch(eShaderType)
         {
         case GL_VERTEX_SHADER:
             strShaderType = "vertex";
             break;
-
         case GL_GEOMETRY_SHADER:
             strShaderType = "geometry";
             break;
-
         case GL_FRAGMENT_SHADER:
             strShaderType = "fragment";
             break;
@@ -53,7 +46,6 @@ GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFi
 
         std::cerr << strShaderType << " tipi shader dosyasi derlenemedi. Detaylar:\n" << strInfoLog << std::endl;
         delete[] strInfoLog;
-
     }
 
     return shader;
@@ -68,7 +60,6 @@ GLuint GlHelper::CreateProgram(const std::vector<GLuint> &shaderList) {
     glLinkProgram(program);
     GLint status;
     glGetProgramiv (program, GL_LINK_STATUS, &status);
-
     if (status == GL_FALSE)
     {
         GLint infoLogLength;
@@ -78,14 +69,12 @@ GLuint GlHelper::CreateProgram(const std::vector<GLuint> &shaderList) {
         glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
         std::cerr << "Linkleme sorunu: \n" << strInfoLog << std::endl;
         delete[] strInfoLog;
+
     }
-
     offsetLocation = glGetUniformLocation(program, "offset");
-
 
     for(size_t iLoop = 0; iLoop < shaderList.size(); iLoop++)
         glDetachShader(program, shaderList[iLoop]);
-
     return program;
 }
 
