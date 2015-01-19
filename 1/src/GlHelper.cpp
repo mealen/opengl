@@ -92,9 +92,6 @@ void GlHelper::InitializeVertexBuffer() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
     glEnableClientState(GL_VERTEX_ARRAY) ;
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
 }
 
 
