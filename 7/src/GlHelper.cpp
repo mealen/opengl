@@ -115,7 +115,7 @@ void GlHelper::InitializeVertexBuffer() {
     glColorPointer(4, GL_FLOAT, 0, 0) ;
     glEnableClientState(GL_COLOR_ARRAY) ;
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 }
 
