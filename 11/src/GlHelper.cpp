@@ -83,11 +83,8 @@ void GlHelper::InitializeProgram() {
 
     theProgram = CreateProgram(shaderList);
 
-    elapsedTimeUniform = glGetUniformLocation(theProgram, "time");
+    timeUni = glGetUniformLocation(theProgram, "time");
     
-    loopDurationUnf = glGetUniformLocation(theProgram, "loopDuration");
-    fragLoopDurUnf = glGetUniformLocation(theProgram, "fragLoopDuration");
-
     std::for_each(shaderList.begin(), shaderList.end(), glDeleteShader);
 }
 
@@ -123,10 +120,7 @@ void GlHelper::render() {
 
     glUseProgram(theProgram);
     
-    glUniform1f(loopDurationUnf, 5.0f);
-    glUniform1f(fragLoopDurUnf, 10.0f);
-    
-    glUniform1f(elapsedTimeUniform, glfwGetTime());
+    glUniform1f(timeUni, glfwGetTime());
 
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);

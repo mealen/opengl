@@ -20,9 +20,7 @@ private:
     GLuint positionBufferObject;
     GLuint vao;
     GLuint theProgram;
-    GLuint elapsedTimeUniform;
-    GLuint loopDurationUnf;
-    GLuint fragLoopDurUnf;
+    GLuint timeUni;
     GLuint vertexbuffer;
     float vertexPositions[12];
 
