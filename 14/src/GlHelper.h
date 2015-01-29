@@ -9,6 +9,8 @@
 #include <streambuf>
 #include <iostream>
 #include <string.h>
+#include <cmath>
+#include <GLFW/glfw3.h>
 
 #ifdef LOAD_X11
 #define APIENTRY
@@ -31,6 +33,7 @@ private:
     unsigned short vertexIndex[36];
     float perspectiveMatrix[16];
     float scaleMatrix[16];
+    float scaleMatrix2[16];
     GLuint perspectiveMatrixM;
     GLuint scaleMatrixM;
 

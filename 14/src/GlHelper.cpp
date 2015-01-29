@@ -125,19 +125,18 @@ void GlHelper::InitializeVertexBuffer() {
     
 }
 
-
 GlHelper::GlHelper() {
 
     float vertexPositions[] = {
-        +0.5f, +0.5f, -1.75f,1.0f,
-        -0.5f, -0.5f, -1.75f,1.0f,
-        -0.5f, +0.5f, -2.25f,1.0f,
-        +0.5f, -0.5f, -2.25f,1.0f,
+        +1.0f, +1.0f, +1.0f, 1.0f,
+        -1.0f, -1.0f, +1.0f, 1.0f,
+        -1.0f, +1.0f, -1.0f, 1.0f,
+        +1.0f, -1.0f, -1.0f, 1.0f,
 
-        -0.5f, -0.5f, -2.25f,1.0f,
-        +0.5f, +0.5f, -2.25f,1.0f,
-        +0.5f, -0.5f, -1.75f,1.0f,
-        -0.5f, +0.5f, -1.75f,1.0f,
+        -1.0f, -1.0f, -1.0f, 1.0f,
+        +1.0f, +1.0f, -1.0f, 1.0f,
+        +1.0f, -1.0f, +1.0f, 1.0f,
+        -1.0f, +1.0f, +1.0f, 1.0f,
     };
     float vertexColors[] = {
         0.0f, 1.0f, 0.0f, 1.0f,
@@ -169,20 +168,29 @@ GlHelper::GlHelper() {
     std::copy(vertexColors,vertexColors + 8*4, this->vertexColors);
     std::copy(vertexIndex,vertexIndex + 8*3, this->vertexIndex);
 
-    float frustrumScale=1.0f, zFar=3.0f,zNear=1.0f;
+    float fFrustumScale=2.4f; zFar=60.0f,zNear=1.0f;
     memset(perspectiveMatrix,0,16*sizeof(float));
-    perspectiveMatrix[0]=frustrumScale;
-    perspectiveMatrix[5]=frustrumScale;
+    perspectiveMatrix[0]=fFrustumScale;
+    perspectiveMatrix[5]=fFrustumScale;
     perspectiveMatrix[10]= (zFar + zNear) / (zNear - zFar);
     perspectiveMatrix[14]= (2*zFar * zNear) / (zNear - zFar);
     perspectiveMatrix[11]= -1.0f;
 
     memset(scaleMatrix,0,16*sizeof(float));
-    scaleMatrix[0] = 1;
-    scaleMatrix[5] = 1;
-    scaleMatrix[10]= 1;
+    scaleMatrix[0] = 4.0f;
+    scaleMatrix[5] = 4.0f;
+    scaleMatrix[10]= 4.0f;
+    scaleMatrix[12]= -10.0f;
+    scaleMatrix[13]= -10.0f;
+    scaleMatrix[14]= -25.0f;
     scaleMatrix[15]= 1;
 
+    memset(scaleMatrix2,0,16*sizeof(float));
+    scaleMatrix2[12]= 10.0f;
+    scaleMatrix2[13]= 10.0f;
+    scaleMatrix2[14]= -25.0f;
+    scaleMatrix2[15]= 1;
+    
     InitializeProgram();
     InitializeVertexBuffer();
 
@@ -190,6 +198,10 @@ GlHelper::GlHelper() {
     glBindVertexArray(vao);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, colorBufferObject);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObject);
 
     glBindVertexArray(0);
@@ -210,14 +222,14 @@ void GlHelper::render() {
     glUniform2f(offsetLocation, xOffset, yOffset);
     glUniformMatrix4fv(perspectiveMatrixM, 1,GL_FALSE,perspectiveMatrix);
     glUniformMatrix4fv(scaleMatrixM, 1, GL_FALSE, scaleMatrix);
-
-    glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, colorBufferObject);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObject);
     glDrawElements(GL_TRIANGLES, 8*3, GL_UNSIGNED_SHORT,0);
 
+    std::cout << fFrustumScale ;
+    float timeVar = sin(glfwGetTime()) * 2.0f + 2.0f;
+    scaleMatrix2[0] = timeVar, scaleMatrix2[5] = timeVar, scaleMatrix2[10] = timeVar;
+    glUniformMatrix4fv(scaleMatrixM, 1, GL_FALSE, scaleMatrix2);
+    glDrawElements(GL_TRIANGLES, 8*3, GL_UNSIGNED_SHORT,0);
+    
     glBindVertexArray(0);
     glUseProgram(0);
 }
@@ -259,7 +271,7 @@ void GlHelper::reshape (int w, int h)
 
 
 void GlHelper::scale(double x, double y) {
-    scaleMatrix[0] += y / 20;
-    scaleMatrix[5] += y / 20;
-    scaleMatrix[15] += y / 20;
+    scaleMatrix[0] += y / 10;
+    scaleMatrix[5] += y / 10;
+    scaleMatrix[10] += y / 10;
 }
