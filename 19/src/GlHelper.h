@@ -34,6 +34,7 @@ private:
     float perspectiveMatrix[16];
     float translateMatrix[16];
     float translateMatrix2[16];
+    float translateMatrix3[16];
     GLuint perspectiveMatrixM;
     GLuint translateMatrixM;
 

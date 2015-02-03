@@ -129,15 +129,15 @@ GlHelper::GlHelper() {
 
 
     float vertexPositions[] = {
-        +1.0f, +1.0f, +1.0f, 1.0f,
-        -1.0f, -1.0f, +1.0f, 1.0f,
-        -1.0f, +1.0f, -1.0f, 1.0f,
-        +1.0f, -1.0f, -1.0f, 1.0f,
+        +0.05f, +0.05f, -1.95f, 1.0f,
+        -0.05f, -0.05f, -1.95f, 1.0f,
+        -0.05f, +0.05f, -2.15f, 1.0f,
+        +0.05f, -0.05f, -2.15f, 1.0f,
 
-        -1.0f, -1.0f, -1.0f, 1.0f,
-        +1.0f, +1.0f, -1.0f, 1.0f,
-        +1.0f, -1.0f, +1.0f, 1.0f,
-        -1.0f, +1.0f, +1.0f, 1.0f,
+        -0.05f, -0.05f, -2.15f, 1.0f,
+        +0.05f, +0.05f, -2.15f, 1.0f,
+        +0.05f, -0.05f, -1.95f, 1.0f,
+        -0.05f, +0.05f, -1.95f, 1.0f,
     };
     float vertexColors[] = {
         0.0f, 1.0f, 0.0f, 1.0f,
@@ -169,7 +169,7 @@ GlHelper::GlHelper() {
     std::copy(vertexColors,vertexColors + 8*4, this->vertexColors);
     std::copy(vertexIndex,vertexIndex + 8*3, this->vertexIndex);
 
-    float fFrustumScale=2.4f, zFar=60.0f, zNear=1.0f;
+    float fFrustumScale=2.4f, zFar=3.0f, zNear=1.0f;
     memset(perspectiveMatrix,0,16*sizeof(float));
     perspectiveMatrix[0]=fFrustumScale;
     perspectiveMatrix[5]=fFrustumScale;
@@ -181,19 +181,28 @@ GlHelper::GlHelper() {
     translateMatrix[0] = 1.0f;
     translateMatrix[5] = 1.0f;
     translateMatrix[10]= 1.0f;
-    translateMatrix[12]= -4.0f;
-    translateMatrix[13]= -4.0f;
-    translateMatrix[14]= -25.0f;
-    translateMatrix[15]= 1;
+    translateMatrix[12]= 0.0f;
+    translateMatrix[13]= 0.0f;
+    translateMatrix[14]= 0.0f;
+    translateMatrix[15]= 1.0f;
 
     memset(translateMatrix2,0,16*sizeof(float));
     translateMatrix2[0] = 1.0f;
     translateMatrix2[5] = 1.0f;
     translateMatrix2[10]= 1.0f;
-    translateMatrix2[12]= 4.0f;
-    translateMatrix2[13]= 4.0f;
-    translateMatrix2[14]= -25.0f;
-    translateMatrix2[15]= 1;
+    translateMatrix2[12]= -0.30f;
+    translateMatrix2[13]= 0.0f;
+    translateMatrix2[14]= 0.0f;
+    translateMatrix2[15]= 1.0f;
+    
+    memset(translateMatrix3,0,16*sizeof(float));
+    translateMatrix3[0] = 1.0f;
+    translateMatrix3[5] = 1.0f;
+    translateMatrix3[10]= 1.0f;
+    translateMatrix3[12]= +0.30f;
+    translateMatrix3[13]= 0.0f;
+    translateMatrix3[14]= 0.0f;
+    translateMatrix3[15]= 1.0f;
     
     InitializeProgram();
     InitializeVertexBuffer();
@@ -228,9 +237,14 @@ void GlHelper::render() {
     glUniformMatrix4fv(translateMatrixM, 1, GL_FALSE, translateMatrix);
     glDrawElements(GL_TRIANGLES, 8*3, GL_UNSIGNED_SHORT,0);
 
-    float timeVar = sin(glfwGetTime()) * 2.0f;
-    translateMatrix2[12] = timeVar, translateMatrix2[13] = timeVar;;
+    float sinTimeVar = sin(glfwGetTime() ) * 0.005f;
+    float cosTimeVar = cos(glfwGetTime() ) * 0.005f;
+    translateMatrix2[12] += sinTimeVar, translateMatrix2[13] += cosTimeVar;
     glUniformMatrix4fv(translateMatrixM, 1, GL_FALSE, translateMatrix2);
+    glDrawElements(GL_TRIANGLES, 8*3, GL_UNSIGNED_SHORT,0);
+    
+    translateMatrix3[12] -= sinTimeVar, translateMatrix3[13] -= cosTimeVar;
+    glUniformMatrix4fv(translateMatrixM, 1, GL_FALSE, translateMatrix3);
     glDrawElements(GL_TRIANGLES, 8*3, GL_UNSIGNED_SHORT,0);
     
     glBindVertexArray(0);
@@ -238,7 +252,7 @@ void GlHelper::render() {
 }
 
 void GlHelper::move(GlHelper::directions direction) {
-    float movementAmount = 0.7;
+    float movementAmount = 0.03;
 
     switch (direction) {
     case UP:
