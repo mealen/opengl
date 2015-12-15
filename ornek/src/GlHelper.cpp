@@ -1,4 +1,9 @@
 #include "GlHelper.h"
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#include "lib/stb_image.h"
+#endif
+
 
 GLuint GlHelper::CreateShader(GLenum eShaderType, const std::string &strShaderFile) {
     GLuint shader = glCreateShader(eShaderType);
@@ -99,8 +104,16 @@ void GlHelper::InitializeVertexBuffer() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexColors), vertexColors,GL_STATIC_DRAW);
     glColorPointer(4, GL_FLOAT, 0, 0) ;
     glEnableClientState(GL_COLOR_ARRAY) ;
+    
+    //texture
+    glGenBuffers(1, &textureBufferObject);
+    glBindBuffer(GL_ARRAY_BUFFER, textureBufferObject) ;
+    glBufferData(GL_ARRAY_BUFFER, sizeof(textureCoords), textureCoords,GL_STATIC_DRAW);
+    glTexCoordPointer(4, GL_FLOAT, 0, 0) ;
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY) ;
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     
 }
 
@@ -118,15 +131,33 @@ GlHelper::GlHelper() {
 		0.0f, 1.0f, 0.0f, 1.0f,
 		0.0f, 0.0f, 1.0f, 1.0f
     };
+    
+    float textureCoords[] = {
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f
+    };
 
     std::copy(vertexPositions,vertexPositions + 12, this->vertexPositions);
     std::copy(vertexColors,vertexColors + 12, this->vertexColors);
+    std::copy(textureCoords,textureCoords + 6, this->textureCoords);
 
     InitializeProgram();
     InitializeVertexBuffer();
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
+    int x,y,n;
+    unsigned char *data = stbi_load("../res/texture.jpg", &x, &y, &n, 0);
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);  
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+
+
 }
 void GlHelper::render() {
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -137,9 +168,16 @@ void GlHelper::render() {
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, colorBufferObject);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+    glEnableVertexAttribArray(2); 
+    glBindBuffer(GL_ARRAY_BUFFER, textureBufferObject);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 0, 0);
+    glBindTexture(GL_TEXTURE_2D, texture);  
+
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glDisableVertexAttribArray(1);

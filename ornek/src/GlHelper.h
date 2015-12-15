@@ -18,11 +18,14 @@ class GlHelper {
 private:
     GLuint positionBufferObject;
     GLuint colorBufferObject;
+    GLuint textureBufferObject;
     GLuint vao;
     GLuint theProgram;
+    GLuint texture;    
     GLuint vertexbuffer;
     float vertexPositions[12];
     float vertexColors[12];
+    float textureCoords[6];
 
 public:
     GlHelper();
