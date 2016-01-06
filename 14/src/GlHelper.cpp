@@ -168,7 +168,7 @@ GlHelper::GlHelper() {
     std::copy(vertexColors,vertexColors + 8*4, this->vertexColors);
     std::copy(vertexIndex,vertexIndex + 8*3, this->vertexIndex);
 
-    float fFrustumScale=2.4f; zFar=60.0f,zNear=1.0f;
+    float fFrustumScale=1.0f, zFar=60.0f,zNear=1.0f;
     memset(perspectiveMatrix,0,16*sizeof(float));
     perspectiveMatrix[0]=fFrustumScale;
     perspectiveMatrix[5]=fFrustumScale;
@@ -224,7 +224,7 @@ void GlHelper::render() {
     glUniformMatrix4fv(scaleMatrixM, 1, GL_FALSE, scaleMatrix);
     glDrawElements(GL_TRIANGLES, 8*3, GL_UNSIGNED_SHORT,0);
 
-    std::cout << fFrustumScale ;
+    //std::cout << fFrustumScale ;
     float timeVar = sin(glfwGetTime()) * 2.0f + 2.0f;
     scaleMatrix2[0] = timeVar, scaleMatrix2[5] = timeVar, scaleMatrix2[10] = timeVar;
     glUniformMatrix4fv(scaleMatrixM, 1, GL_FALSE, scaleMatrix2);
