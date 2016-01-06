@@ -3,7 +3,7 @@ CXX = g++
 
 #GLFW_INCLUDE = -I/usr/include
 LDFLAGS=-L/usr/lib/nvidia-331/ -L/usr/local/lib/
-LIBS=-lGL -lGLU -lglfw -lGLEW -lX11 -lXxf86vm -lXrandr -lpthread -lXi
+LIBS=-lGL -lGLU -lglfw3 -lGLEW -lX11 -lXxf86vm -lXrandr -lpthread -lXi
 INCLUDES=-I/usr/include
 
 #bu noktadan sonra degisiklik yapmaniz gerekmemeli 
