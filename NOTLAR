@@ -1,0 +1,101 @@
+* tut1 üçgen
+* tut2 renkli üçgen
+* tut3 cpu üzerinde hareket ettirme 
+* tut4 shader üzerinder offset ile hareket ettirme 
+* tut5 küp 
+* tut6 z-buffer
+* tut7 perspektif matrisi
+* tut8 index draw eklendi
+* tut9 vao kullanımı eklendi
+* tut10 kullanılan sekil kupten yıldız a çevrildi
+* tut11 zamana bağlı renk değiştirme
+* tut13 interpolation renk
+* tut14 zamana bağlı büyüme ve klavye ile hareket
+* tut15 zamana bağlı hareket ve renk değiştirme (üçgen)
+* tut16 scroll ile büyüme (üçgen)
+* tut17 fare takip
+* tut19 zamana bağlı hareket + klavye ile
+
+
+ToDo:
+* Texture için wrapping örneği eklenmeli (Alpert)
+* Rotation örneği eklenmeli (Engin)
+* Kamera örneği eklenmeli ( Engin)
+* Üçgenli örnekleri yaratıklı hale getirmek lazım ( Mesutcan)
+* 4-5 ornekleri arasında perspektif olmadan küp ornegi lazım (Engin)
+* overlapping object ornegi lazım (z buffer icin) (Engin)
+
+
+
+Notlar:
+  sonuna diğer kaynaklar ve başka neler yapılabilir
+
+
+konu dağılımı:
+giriş - engin
+merhaba üçgen - mesutcan
+renkler - alper
+konumlandırma - mesutcan
+nesneler - sanal dünya - perspektif - engin
+hareket ettirme - mesutcan
+boyutlandırma - alper
+döndürme - engin
+kamera transform - Alper
+
+
+
+
+7 * 4 ders
+3 kafadan gidecek (1 giriş konusmasi, 1 canta vs. dagitilmasi, 1 egitmen degerlendirmesi)
+
+25 ders
+
+
+////
+  * 1 matematik konularına hatırlatma
+////
+
+6 ->
+  * 1 tanışma +
+  // engin 
+  * 2 ne anlatılacak  / opengl nasıl/neden / opengl nasıl calisiyor +
+  ## OGLE ##
+  // mesutcan
+  * 1 frameworkler neden ucgen + 
+  * 2 satır satır kod +
+7 -> 
+  // alper
+  * 1 fragment shader nedir shader arası veri akisi +
+  * 1 renklendirme +
+  * 1 texture -
+  ## OGLE ##
+  * 1 interpolation tipleri +
+  * timer implementasyonu  +
+  * 1 kod anlatımı +
+  // mesutcan 
+  * 2 hareket ettirme  +
+
+7 ->
+  //engin
+  * 1 culling/winding -
+  * 1 kup tanımlama +
+  * 1 perspektif ne +
+  ## OGLE ##
+  * 1 ders frustrum ve projection degiskenleri + 
+  * 1 ders perspektif matrisi olusturulması +
+  * 1 vao indexed draw multple objects +
+  * 1 ?
+5 -> 
+  // engin
+  * perspektif matris tekrar +
+  // mesutcan
+  * 1 hareket ettirme +
+  // alper
+  * 1 boyutlandırma +
+  ## OGLE ##
+  // engin
+  * 2 dondurme -
+  * 1-2 camera -
+
+
+
