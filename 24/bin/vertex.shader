@@ -15,9 +15,9 @@ uniform mat4 perspectiveMatrixM;
 void main()
 {
 	vec4 cameraPos = translateMatrixM * rotationMatrixM * scaleMatrixM * position;
-	mat4 translate = mat4(1);
-	translate[2][3]= -2;
-	cameraPos = cameraPos * translate;
+	//mat4 translate = mat4(1);
+	//translate[2][3]= -2;
+	//cameraPos = cameraPos * translate;
 	gl_Position = perspectiveMatrixM * lookAtMatrixM * cameraPos;
 	theColor = color;
 }

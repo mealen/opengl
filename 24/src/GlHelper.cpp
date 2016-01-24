@@ -200,7 +200,7 @@ GlHelper::GlHelper(int width, int height): width(width), height(height) {
     std::copy(vertexColors,vertexColors + 8*4, this->vertexColors);
     std::copy(vertexIndex,vertexIndex + 8*3, this->vertexIndex);
 
-    float fFrustumScale=2.4f, zFar=3.0f, zNear=1.0f;
+    float fFrustumScale=2.4f, zFar=10.0f, zNear=0.1f;
     memset(perspectiveMatrix,0,16*sizeof(float));
     perspectiveMatrix[0]=fFrustumScale / (width / (float)height);;
     perspectiveMatrix[5]=fFrustumScale;
@@ -213,6 +213,10 @@ GlHelper::GlHelper(int width, int height): width(width), height(height) {
     lookAtMatrix[0] = 1;
     lookAtMatrix[5] = 1;
     lookAtMatrix[10] = 1;
+    //take the camera to -2 in z
+	lookAtMatrix[12] = 0;
+	lookAtMatrix[13] = 0;
+	lookAtMatrix[14] = -2;
     lookAtMatrix[15] = 1;
 
     memset(rotationMatrix,0,16*sizeof(float));
@@ -343,7 +347,22 @@ void crossProduct(float a, float b, float c,
 	m=a*y-b*x;
 }
 
+void matrixMultiplication(float* matrixA, float* matrixB, float* matrixResult){
+	memset(matrixResult,0,16*sizeof(float));
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			for (int k = 0; k < 4; ++k) {
+				matrixResult[i*4 +j] += matrixA[i*4+k] * matrixB[k*4 + j];
+			}
+		}
+
+	}
+}
+
 void GlHelper::cameraMove(float xi,float yi){
+	float cameraRotate[16];
+	memset(cameraRotate,0,16*sizeof(float));
+
 	float lookAtX,lookAtY, lookAtZ=1;
 	lookAtX = (xi-(width/2))/1000;
 	lookAtY = (yi-(height/2))/1000;
@@ -358,7 +377,7 @@ void GlHelper::cameraMove(float xi,float yi){
 	//default up is 0,1,0
 	float rightA,rightB,rightC;
 	//std::cout << "right was " << rightA <<"," << rightB <<"," << rightC << std::endl;
-	crossProduct(lookAtX,lookAtY,lookAtZ,0,1,0, rightA,rightB,rightC);
+	crossProduct(0,1,0, lookAtX,lookAtY,lookAtZ, rightA,rightB,rightC);
 	//std::cout << "right is " << rightA <<"," << rightB <<"," << rightC << std::endl;
 	//now calculate up with change
 	float upA,upB,upC;
@@ -384,23 +403,30 @@ void GlHelper::cameraMove(float xi,float yi){
 	 * D D D 0
 	 * 0 0 0 1
 	 */
-	lookAtMatrix[0] = rightA;
-	lookAtMatrix[1] = rightB;
-	lookAtMatrix[2] = rightC;
+	cameraRotate[0] = rightA;
+	cameraRotate[4] = rightB;
+	cameraRotate[8] = rightC;
 
-	lookAtMatrix[4] = -1 *upA;
-	lookAtMatrix[5] = -1 *upB;
-	lookAtMatrix[6] = -1 *upC;
+	cameraRotate[1] = upA;
+	cameraRotate[5] = upB;
+	cameraRotate[9] = upC;
 
-	lookAtMatrix[8] = lookAtX;
-	lookAtMatrix[9] = lookAtY;
-	lookAtMatrix[10] = lookAtZ;
-	//std::cout << "mouse move calculated" << std::endl;
-	std::cout << lookAtMatrix[0] << " " << lookAtMatrix[1] << " " << lookAtMatrix[2] << " " << lookAtMatrix[3] << std::endl;
-	std::cout << lookAtMatrix[4] << " " << lookAtMatrix[5] << " " << lookAtMatrix[6] << " " << lookAtMatrix[7] << std::endl;
-	std::cout << lookAtMatrix[8] << " " << lookAtMatrix[9] << " " << lookAtMatrix[10] << " " << lookAtMatrix[11] << std::endl;
-	std::cout << lookAtMatrix[12] << " " << lookAtMatrix[13] << " " << lookAtMatrix[14] << " " << lookAtMatrix[15] << std::endl;
-	std::cout << std::endl;
+	cameraRotate[2] = lookAtX;
+	cameraRotate[6] = lookAtY;
+	cameraRotate[10] =lookAtZ;
+	cameraRotate[15] = 1;
+	//the last line is the position transform
+	float cameraTranslate[16];
+	memset(cameraTranslate,0,16*sizeof(float));
+	cameraTranslate[0]=1;
+	cameraTranslate[5]=1;
+	cameraTranslate[10]=1;
+	cameraTranslate[15]=1;
+	cameraTranslate[12] = 0;
+	cameraTranslate[13] = 0;
+	cameraTranslate[14] = -2;
+
+	matrixMultiplication(cameraTranslate,cameraRotate,lookAtMatrix);
 }
 
 void GlHelper::reshape (int w, int h)
