@@ -116,18 +116,35 @@ GlHelper::GlHelper() {
     float vertexPositions[] = {
                 -0.5f, -0.5f, 0.5f, 1.0f,
                  0.5f, -0.5f, 0.5f, 1.0f,
-                 0.5f,  0.5f, 0.5f, 1.0f
+                 0.5f,  0.5f, 0.5f, 1.0f,
+    
+                0.5f,  0.5f, 0.5f, 1.0f,
+                -0.5f,  0.5f, 0.5f, 1.0f,
+                -0.5f,  -0.5f, 0.5f, 1.0f
     };
     
     
     float textureCoords[] = {
 		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f
+		2.0f, 0.0f,
+		2.0f, 2.0f,		
+                
+                2.0f, 2.0f,
+	        0.0f, 2.0f ,
+		0.0f, 0.0f
     };
+//    float textureCoords[] = {
+//		0.0f, 0.0f,
+//		1.0f, 0.0f,
+//		1.0f, 1.0f,		
+//                
+//                1.0f, 1.0f,
+//	        0.0f, 1.0f ,
+//		0.0f, 0.0f
+//    };
 
-    std::copy(vertexPositions,vertexPositions + 12, this->vertexPositions);
-    std::copy(textureCoords,textureCoords + 6, this->textureCoords);
+    std::copy(vertexPositions,vertexPositions + 24, this->vertexPositions);
+    std::copy(textureCoords,textureCoords + 12, this->textureCoords);
 
     InitializeProgram();
     InitializeVertexBuffer();
@@ -136,9 +153,12 @@ GlHelper::GlHelper() {
     glBindVertexArray(vao);
     int x,y,n;
     unsigned char *data = stbi_load("../res/texture.jpg", &x, &y, &n, 0);
+    //unsigned char *data = stbi_load("../res/tux.jpg", &x, &y, &n, 0);
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);  
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glGenerateMipmap(GL_TEXTURE_2D);
     free(data);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -162,9 +182,8 @@ void GlHelper::render() {
     glBindTexture(GL_TEXTURE_2D, texture);  
 
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
     glUseProgram(0);
 }
-

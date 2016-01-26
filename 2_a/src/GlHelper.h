@@ -22,8 +22,8 @@ private:
     GLuint theProgram;
     GLuint texture;    
     GLuint vertexbuffer;
-    float vertexPositions[12];
-    float textureCoords[6];
+    float vertexPositions[24];
+    float textureCoords[12];
 
 public:
     GlHelper();
